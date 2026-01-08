@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="lo" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ຕຳລາ ວິຊາເຄມີສາດ (Chemistry Bible)</title>
+    
+    <!-- Tailwind Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            text: '#e2e8f0',
+                            border: '#334155'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans Lao"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts for Lao -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
+                processEscapes: true
+            },
+            "HTML-CSS": { fonts: ["TeX"] }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans Lao', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Card Hover Effects */
+        .chapter-card {
+            transition: all 0.3s ease;
+        }
+        .chapter-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dark .chapter-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Table Styles */
+        .func-table th, .func-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            text-align: center;
+        }
+        .dark .func-table th, .dark .func-table td {
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        .dark .func-table th { background-color: #1e293b; }
+        .dark .func-table tr:nth-child(even) { background-color: rgba(255,255,255,0.03); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100">
+
+    <!-- Navbar -->
+    <nav class="bg-indigo-900 dark:bg-indigo-950 text-white fixed w-full z-50 shadow-lg transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                    </svg>
+                    <span class="font-bold text-xl tracking-wider cursor-pointer" onclick="window.scrollTo(0,0)">CHEMISTRY BIBLE</span>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="flex items-center gap-6">
+                    <!-- Heart of Chemistry Link -->
+                    <a href="#heart-of-chem" class="hidden md:flex items-center gap-2 bg-pink-600 hover:bg-pink-700 px-4 py-2 rounded-full text-sm font-semibold transition-transform hover:scale-105 shadow-md">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                        ຫົວໃຈເຄມີສາດ
+                    </a>
+
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-indigo-800 hover:bg-indigo-700 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <!-- Sun Icon (Show in Dark Mode) -->
+                        <svg id="sun-icon" class="w-6 h-6 text-yellow-300 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        <!-- Moon Icon (Show in Light Mode) -->
+                        <svg id="moon-icon" class="w-6 h-6 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-br from-indigo-800 via-blue-700 to-indigo-900 text-white pt-28 pb-16 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 drop-shadow-md">ບົດຮຽນ ວິຊາເຄມີສາດ</h1>
+            <p class="text-xl text-indigo-100 max-w-2xl mx-auto font-light">
+                ເນື້ອຫາ ແລະ ສູດສຳຄັນ
+            </p>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="hidden lg:block w-1/4">
+            <div class="sticky top-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 max-h-[80vh] overflow-y-auto transition-colors">
+                <h3 class="font-bold text-lg text-indigo-900 dark:text-indigo-300 mb-4 border-b dark:border-slate-600 pb-2">ສາລະບານ</h3>
+                
+                <!-- Search Box -->
+                <div class="mb-4 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md leading-5 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-colors"
+                        placeholder="ຄົ້ນຫາບົດຮຽນ...">
+                </div>
+
+                <nav class="space-y-1" id="nav-container">
+                    <a href="#heart-of-chem" class="block px-3 py-2 text-sm font-bold text-pink-600 hover:bg-pink-50 dark:hover:bg-slate-700 rounded-md transition-colors">❤ ຫົວໃຈເຄມີສາດ (ສູດລັດ)</a>
+                    <a href="#ch1" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">1. ຄວາມປອດໄພ & ອາຕອມ</a>
+                    <a href="#ch2" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">2. ຕາຕະລາງທາດ</a>
+                    <a href="#ch3" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">3. ພັນທະເຄມີ</a>
+                    <a href="#ch4" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">4. ປະລິມານສານສຳພັນ</a>
+                    <a href="#ch5" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">5. ຂອງແຂງ, ຂອງແຫຼວ, ອາຍ</a>
+                    <a href="#ch6" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">6. ອັດຕາການເກີດປະຕິກິລິຍາ</a>
+                    <a href="#ch7" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">7. ດຸ່ນດ່ຽງເຄມີ</a>
+                    <a href="#ch8" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">8. ອາຊິດ-ບາເຊີ</a>
+                    <a href="#ch9" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">9. ໄຟຟ້າເຄມີ</a>
+                    <a href="#ch10" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">10. ເຄມີອິນຊີ</a>
+                    <a href="#ch11" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">11. ພໍລິເມິ</a>
+                    <a href="#ch12" class="block px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-md transition-colors">12. ເຄມີກັບການແກ້ບັນຫາ</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <!-- Added scroll-mt-24 to sections for offset -->
+        <main class="w-full lg:w-3/4 space-y-8" id="content-container">
+
+            <!-- Heart of Chemistry Special Section -->
+            <section id="heart-of-chem" class="chapter-card scroll-mt-24 bg-gradient-to-br from-pink-500 to-rose-600 text-white rounded-xl shadow-lg border border-pink-400 overflow-hidden relative">
+                <div class="p-8 relative z-10">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg class="w-8 h-8 text-white animate-pulse" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                        <h2 class="text-3xl font-bold">ຫົວໃຈເຄມີສາດ (The Heart of Chemistry)</h2>
+                    </div>
+                    <p class="text-pink-100 text-lg mb-6">ຄວາມຮູ້ພື້ນຖານທີ່ຕ້ອງແມ່ນຍຳທີ່ສຸດ ແມ່ນເລື່ອງ "ໂມນ" (Mole) ເພາະໃຊ້ເຊື່ອມໂຍງການຄິດໄລ່ທຸກບົດ</p>
+                    
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                        <h4 class="font-bold text-white mb-4 text-center text-xl">ສູດແປງໂມນຄອບຈັກກະວານ</h4>
+                        <div class="text-center text-2xl font-math text-white">
+                            $$ mol = \frac{g}{MW} = \frac{N}{6.02 \times 10^{23}} = \frac{V_{STP}}{22.4} = \frac{CV}{1000} $$
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-pink-50 text-center">
+                            <div>$g$ = ມວນສານ (g)</div>
+                            <div>$N$ = ຈຳນວນອະນຸພາກ</div>
+                            <div>$V_{STP}$ = ບໍລິມາດອາຍ ($dm^3$)</div>
+                            <div>$C$ = ຄວາມເຂັ້ມຂຸ້ນ ($M$)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch1 -->
+            <section id="ch1" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 1</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ຄວາມປອດໄພ ແລະ ໂຄງສ້າງອາຕອມ</h2>
+                </div>
+                <div class="p-6">
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">ຮຽນຮູ້ກ່ຽວກັບສັນຍາລັກນິວເຄຼຍ, ອະນຸພາກມູນຖານ ແລະ ຄື້ນແມ່ເຫຼັກໄຟຟ້າ</p>
+                    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2">ສົມຜົນພະລັງງານຄື້ນ</h4>
+                        <div class="text-center my-4 text-lg text-slate-800 dark:text-slate-100">
+                            $$ E = h\nu = \frac{hc}{\lambda} $$
+                        </div>
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 grid grid-cols-2 gap-2 mt-2">
+                            <li>$h \approx 6.626 \times 10^{-34} \ J\cdot s$</li>
+                            <li>$c = 3.0 \times 10^8 \ m/s$</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Ch2 -->
+            <section id="ch2" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 2</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ຕາຕະລາງທາດ (Periodic Table)</h2>
+                </div>
+                <div class="p-6">
+                    <p class="text-slate-600 dark:text-slate-300 mb-4">ແນວໂນ້ມຄຸນລັກສະນະຂອງທາດຕາມຕາຕະລາງທາດ ແລະ ເຄິ່ງຊີວິດ</p>
+                    <div class="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-4 border border-amber-200 dark:border-amber-800">
+                         <h4 class="font-bold text-amber-900 dark:text-amber-400 mb-2">ການສະຫຼາຍຕົວເຄິ່ງຊີວິດ (Half-life)</h4>
+                         <div class="text-center my-4 text-lg text-slate-800 dark:text-slate-100">
+                            $$ N_{ເຫຼືອ} = \frac{N_{ເລີ່ມຕົ້ນ}}{2^n} $$
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 text-center">ເມື່ອ $n = \frac{\text{ເວລາທັງໝົດ}}{\text{ເວລາເຄິ່ງຊີວິດ}}$</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch3 -->
+            <section id="ch3" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 3</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ພັນທະເຄມີ (Chemical Bond)</h2>
+                </div>
+                <div class="p-6">
+                    <p class="text-slate-600 dark:text-slate-300">ເນື້ອຫາຄອບຄຸມ ພັນທະອາຍອນິກ, ໂຄເວເລນ ແລະ ໂລຫະ ລວມເຖິງຮູບຮ່າງໂມເລກຸນ ແລະ ສະພາບຂົ້ວ</p>
+                </div>
+            </section>
+
+            <!-- Ch4 -->
+            <section id="ch4" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 4</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ປະລິມານສານສຳພັນ</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                        <h4 class="font-bold text-blue-900 dark:text-blue-300 mb-2">ສູດຮ້ອຍລະຜົນໄດ້ (% Yield)</h4>
+                        <div class="text-center my-2 text-lg text-slate-800 dark:text-slate-100">
+                            $$ \% Yield = \left( \frac{\text{ຜົນໄດ້ຈິງ}}{\text{ຜົນໄດ້ຕາມທິດສະດີ}} \right) \times 100 $$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Ch5 -->
+             <section id="ch5" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 5</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ຂອງແຂງ, ຂອງແຫຼວ, ອາຍ (ແກ໊ສ)</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2">ກົດເກນອາຍສົມບູນ & ກົດເກນລວມອາຍ</h4>
+                        <div class="text-center my-4 text-xl text-slate-800 dark:text-slate-100">
+                            $$ PV = nRT $$
+                            $$ \frac{P_1V_1}{T_1} = \frac{P_2V_2}{T_2} $$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Ch6 -->
+             <section id="ch6" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 6</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ອັດຕາການເກີດປະຕິກິລິຍາ</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2">ກົດເກນອັດຕາ (Rate Law)</h4>
+                        <div class="text-center my-4 text-lg text-slate-800 dark:text-slate-100">
+                            $$ R = k[A]^m[B]^n $$
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">*ເລກກຳລັງ $m, n$ ຕ້ອງຊອກຫາຈາກການທົດລອງເທົ່ານັ້ນ</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch7 -->
+            <section id="ch7" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 7</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ດຸ່ນດ່ຽງເຄມີ</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2">ຄ່າຄົງທີ່ດຸ່ນດ່ຽງ ($K$)</h4>
+                        <div class="text-center my-4 text-lg text-slate-800 dark:text-slate-100">
+                            ສຳລັບປະຕິກິລິຍາ $aA + bB \rightleftharpoons cC + dD$
+                            $$ K = \frac{[C]^c[D]^d}{[A]^a[B]^b} $$
+                        </div>
+                        <p class="text-sm text-red-500 text-center">*ຄິດສະເພາະສະຖານະ ອາຍ(g) ແລະ ສານລະລາຍ(aq)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch8 -->
+            <section id="ch8" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 8</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ອາຊິດ-ບາເຊີ (Acids-Bases)</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2">ການຄິດໄລ່ pH ແລະ ອາຊິດອ່ອນ</h4>
+                        <div class="text-center my-4 text-lg text-slate-800 dark:text-slate-100">
+                            $$ pH = -\log[H^+] $$
+                            $$ [H^+] = \sqrt{K_a \times C_{acid}} $$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch9 -->
+            <section id="ch9" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-indigo-50 dark:bg-indigo-900/40 px-6 py-4 border-b border-indigo-100 dark:border-indigo-800 flex items-center gap-3">
+                    <span class="bg-indigo-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 9</span>
+                    <h2 class="text-xl font-bold text-indigo-900 dark:text-indigo-300">ໄຟຟ້າເຄມີ</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 border border-slate-200 dark:border-slate-600">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 mb-2">ທ່າແຮງໄຟຟ້າຂອງບິນ ($E^\circ_{cell}$)</h4>
+                        <div class="text-center my-4 text-lg text-slate-800 dark:text-slate-100">
+                            $$ E^\circ_{cell} = E^\circ_{cathode} - E^\circ_{anode} $$
+                            $$ (ຮັບ - ຈ່າຍ) $$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch10: Organic Chemistry -->
+            <section id="ch10" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-pink-50 dark:bg-pink-900/30 px-6 py-4 border-b border-pink-100 dark:border-pink-800 flex items-center gap-3">
+                    <span class="bg-pink-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 10</span>
+                    <h2 class="text-xl font-bold text-pink-900 dark:text-pink-300">ເຄມີອິນຊີ</h2>
+                </div>
+                <div class="p-6">
+                    <div class="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-600 overflow-hidden mb-4">
+                        <table class="w-full text-sm text-left text-slate-600 dark:text-slate-300 func-table">
+                            <thead class="text-xs text-slate-700 dark:text-slate-200 uppercase bg-slate-50 dark:bg-slate-700">
+                                <tr>
+                                    <th>ສານ</th>
+                                    <th>ສູດທົ່ວໄປ</th>
+                                    <th>ໝູ່ຟັງຊັນ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ອານການ (Alkane)</td>
+                                    <td>$C_nH_{2n+2}$</td>
+                                    <td>ພັນທະດ່ຽວ</td>
+                                </tr>
+                                <tr>
+                                    <td>ອານແກນ (Alkene)</td>
+                                    <td>$C_nH_{2n}$</td>
+                                    <td>ພັນທະຄູ່</td>
+                                </tr>
+                                <tr>
+                                    <td>ອານກິນ (Alkyne)</td>
+                                    <td>$C_nH_{2n-2}$</td>
+                                    <td>ພັນທະສາມ</td>
+                                </tr>
+                                <tr>
+                                    <td>ເຫຼົ້າ (Alcohol)</td>
+                                    <td>$R-OH$</td>
+                                    <td>Hydroxyl</td>
+                                </tr>
+                                <tr>
+                                    <td>ອາຊິດ (Acid)</td>
+                                    <td>$R-COOH$</td>
+                                    <td>Carboxyl</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="bg-pink-50 dark:bg-pink-900/20 rounded-lg p-4 border border-pink-200 dark:border-pink-800">
+                         <h4 class="font-bold text-pink-900 dark:text-pink-300 mb-2">ປະຕິກິລິຍາການເຜົາໄໝ້ສົມບູນ</h4>
+                         <div class="text-center my-2 text-lg text-slate-800 dark:text-slate-100">
+                            $$ C_xH_y + (x + \frac{y}{4})O_2 \rightarrow xCO_2 + \frac{y}{2}H_2O $$
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ch11: Polymer -->
+            <section id="ch11" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-teal-50 dark:bg-teal-900/30 px-6 py-4 border-b border-teal-100 dark:border-teal-800 flex items-center gap-3">
+                    <span class="bg-teal-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 11</span>
+                    <h2 class="text-xl font-bold text-teal-900 dark:text-teal-300">ພໍລິເມິ (Polymer)</h2>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-slate-700 p-4 rounded border border-slate-200 dark:border-slate-600">
+                            <h4 class="font-bold text-teal-700 dark:text-teal-300 mb-2">1. ແບບຕື່ມ (Addition)</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">ພັນທະຄູ່ແຕກອອກເຊື່ອມຕໍ່ກັນ (ເຊັ່ນ: PE, PVC, PS)</p>
+                        </div>
+                        <div class="bg-white dark:bg-slate-700 p-4 rounded border border-slate-200 dark:border-slate-600">
+                            <h4 class="font-bold text-teal-700 dark:text-teal-300 mb-2">2. ແບບຄວບແໜ້ນ (Condensation)</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-300">ມີໂມເລກຸນນ້ອຍຫຼຸດອອກມາ (ເຊັ່ນ: Nylon, PET)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Ch12: Problem Solving -->
+             <section id="ch12" class="chapter-card scroll-mt-24 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-green-50 dark:bg-green-900/30 px-6 py-4 border-b border-green-100 dark:border-green-800 flex items-center gap-3">
+                    <span class="bg-green-600 text-white text-sm font-bold px-2 py-1 rounded">ບົດທີ 12</span>
+                    <h2 class="text-xl font-bold text-green-900 dark:text-green-300">ເຄມີກັບການແກ້ບັນຫາ</h2>
+                </div>
+                <div class="p-6">
+                    <ul class="list-disc list-inside text-slate-600 dark:text-slate-300 space-y-2 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+                        <li><strong>ລະບຸບັນຫາ:</strong> ເລືອກຫົວຂໍ້ ແລະ ຂອບເຂດ</li>
+                        <li><strong>ສືບຄົ້ນ:</strong> ຊອກຫາແຫຼ່ງອ້າງອີງ</li>
+                        <li><strong>ທົດລອງ:</strong> ຄວບຄຸມຕົວປ່ຽນ (ຕົ້ນ, ຕາມ, ຄວບຄຸມ)</li>
+                        <li><strong>ວິເຄາະ:</strong> ສະຫຼຸບຜົນຕາມຂໍ້ມູນຈິງ</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 dark:bg-slate-950 text-slate-300 py-8 mt-12 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>© 2026 Chemistry Bible Project.</p>
+        </div>
+    </footer>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        // ALWAYS DEFAULT TO LIGHT MODE ON LOAD
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light'; 
+        
+        // Ensure Icons are correct for light mode
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+
+        themeToggleBtn.addEventListener('click', () => {
+            // Toggle class
+            document.documentElement.classList.toggle('dark');
+            
+            // Toggle icons
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+
+            // Save preference
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const chapterCards = document.querySelectorAll('.chapter-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            chapterCards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
